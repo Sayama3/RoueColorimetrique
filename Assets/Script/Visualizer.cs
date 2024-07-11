@@ -5,14 +5,14 @@ using System.Globalization;
 using System.Text;
 using UnityEngine;
 using yutokun;
-
+using Random = UnityEngine.Random;
 
 
 public class Visualizer : MonoBehaviour
 {
     [SerializeField] private string m_CSVPath;
     [SerializeField, Min(0)] private float m_RadiusMin = 5;
-    [SerializeField, Min(0)] private float m_RadiusMax = 15;
+    [SerializeField, Min(0)] private float m_RadiusScaler = 1;
     [SerializeField] private float m_ImageSize = 0.1f;
     
     private const int c_DominateHueIndex = 6;
@@ -62,11 +62,13 @@ public class Visualizer : MonoBehaviour
             Vector3 fwd = rot * Vector3.forward;
             
 
-            float distance = Mathf.Lerp(m_RadiusMin, m_RadiusMax, image.AverageHue);
-            fwd *= distance;
+            float distance = Mathf.Lerp(m_RadiusMin, m_Images.Count / (2*Mathf.PI) + m_RadiusMin, image.AverageHue);
+            fwd *= distance * m_RadiusScaler;
+            // fwd *= m_Images.Count / (2*Mathf.PI);
             var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
             quad.gameObject.name = image.Name;
             quad.transform.rotation = Quaternion.LookRotation(Vector3.down, rot * Vector3.forward);
+            fwd.y += Random.value;
             quad.transform.position = fwd;
             quad.transform.localScale = new Vector3(m_ImageSize, m_ImageSize, m_ImageSize);
 
