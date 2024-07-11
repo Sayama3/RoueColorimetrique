@@ -41,15 +41,16 @@ public class Visualizer : MonoBehaviour
     private void PreprocessData()
     {
         m_Images.Sort();
-
-        foreach (var image in m_Images)
-        {
-            Debug.Log($"{image.Name}: d={image.DominantHue}, a={image.AverageHue}");
-        }
+        Debug.Log("Images Sorted.");
+        // foreach (var image in m_Images)
+        // {
+            // Debug.Log($"{image.Name}: d={image.DominantHue}, a={image.AverageHue}");
+        // }
     }
 
     private void GenerateImages()
     {
+        Debug.Log("Start Image Generation");
         for (int i = 0; i < m_Images.Count; i++)
         {
             var image = m_Images[i];
@@ -78,6 +79,7 @@ public class Visualizer : MonoBehaviour
             
             quad.transform.SetParent(this.transform, true);
         }
+        Debug.Log("Image generated");
     }
     
     private void Start()
