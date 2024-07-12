@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using yutokun;
@@ -18,12 +19,13 @@ public class Visualizer : MonoBehaviour
     private const int c_DominateHueIndex = 6;
     private List<Image> m_Images;
     private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+    private static readonly int MainColor = Shader.PropertyToID("_Color");
     private const int c_AverageHueIndex = 3;
     private const int c_NamesIndex = 0;
 
     private void PrepareFromCsv()
     {
-        List<List<string>> csv = CSVParser.LoadFromPath(m_CSVPath, Delimiter.Comma);
+        List<List<string>> csv = CSVParser.LoadFromPath(Path.Combine(Application.streamingAssetsPath, m_CSVPath), Delimiter.Comma);
         // Line 0 is the header.
         {
             Debug.Log("Names :" + csv[0][c_NamesIndex]);
@@ -76,9 +78,16 @@ public class Visualizer : MonoBehaviour
             quad.transform.localScale = new Vector3(m_ImageSize, m_ImageSize, m_ImageSize);
 
             quad.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Standard"));
-            quad.GetComponent<MeshRenderer>().material.SetTexture(MainTex, tex);;
-            
-            
+            if (tex != null)
+            {
+                quad.GetComponent<MeshRenderer>().material.SetTexture(MainTex, tex);
+            }
+            else
+            {
+                quad.GetComponent<MeshRenderer>().material.SetColor(MainColor, Color.HSVToRGB(image.DominantHue, 1, 1));
+            }
+
+
             quad.transform.SetParent(this.transform, true);
         }
         Debug.Log("Image generated");
