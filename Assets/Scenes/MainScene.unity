@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf96fa2eb3219940a7b061ec01d3b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Shader: {fileID: 4800000, guid: 315e0babf8e8fe340ac687eba21db637, type: 3}
   m_CSVPath: data.csv
   m_RadiusMin: 0
   m_RadiusScaler: 1
@@ -1107,7 +1108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 
 public class Visualizer : MonoBehaviour
 {
+    [SerializeField] private Shader m_Shader;
     [SerializeField] private string m_CSVPath;
     [SerializeField, Min(0)] private float m_RadiusMin = 5;
     [SerializeField, Min(0)] private float m_RadiusScaler = 1;
@@ -51,15 +52,44 @@ public class Visualizer : MonoBehaviour
         // }
     }
 
+    // /// <summary>
+    // /// Return a texture2D from the resources folders
+    // /// </summary>
+    // /// <param name="name"></param>
+    // /// <returns></returns>
+    // Texture2D GetTexture(string name)
+    // {
+    //     string resourceStr = "images/" + name;
+    //     resourceStr = resourceStr.Remove(resourceStr.Length - 4, 4);
+    //     Texture2D tex = Resources.Load<Texture2D>(resourceStr);
+    //     return tex;
+    // }
+    
+    Texture2D GetTexture(string name)
+    {
+        string imgPath = Path.Combine(Application.streamingAssetsPath, "images/" + name);
+        Texture2D tex = new Texture2D(1, 1);
+        try
+        {
+            byte[] imgtxt = File.ReadAllBytes(imgPath);
+            bool result = ImageConversion.LoadImage(tex, imgtxt);
+            if (!result) return null;
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+            return null;
+        }
+        return tex;
+    }
+    
     private void GenerateImages()
     {
         Debug.Log("Start Image Generation");
         for (int i = 0; i < m_Images.Count; i++)
         {
             var image = m_Images[i];
-            string resourceStr = "images/" + image.Name;
-            resourceStr = resourceStr.Remove(resourceStr.Length - 4, 4);
-            Texture tex = Resources.Load<Texture>(resourceStr);
+            Texture tex = GetTexture(image.Name);
             
             var degree = ((float)i / (float)m_Images.Count) * (360.0f);
             Quaternion rot = Quaternion.AngleAxis(degree, Vector3.up);
@@ -77,7 +107,7 @@ public class Visualizer : MonoBehaviour
             quad.transform.position = fwd;
             quad.transform.localScale = new Vector3(m_ImageSize, m_ImageSize, m_ImageSize);
 
-            quad.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Standard"));
+            quad.GetComponent<MeshRenderer>().material = new Material(m_Shader);
             if (tex != null)
             {
                 quad.GetComponent<MeshRenderer>().material.SetTexture(MainTex, tex);
