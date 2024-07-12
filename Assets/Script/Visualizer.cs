@@ -52,36 +52,36 @@ public class Visualizer : MonoBehaviour
         // }
     }
 
-    // /// <summary>
-    // /// Return a texture2D from the resources folders
-    // /// </summary>
-    // /// <param name="name"></param>
-    // /// <returns></returns>
-    // Texture2D GetTexture(string name)
-    // {
-    //     string resourceStr = "images/" + name;
-    //     resourceStr = resourceStr.Remove(resourceStr.Length - 4, 4);
-    //     Texture2D tex = Resources.Load<Texture2D>(resourceStr);
-    //     return tex;
-    // }
-    
+    /// <summary>
+    /// Return a texture2D from the resources folders
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     Texture2D GetTexture(string name)
     {
-        string imgPath = Path.Combine(Application.streamingAssetsPath, "images/" + name);
-        Texture2D tex = new Texture2D(1, 1);
-        try
-        {
-            byte[] imgtxt = File.ReadAllBytes(imgPath);
-            bool result = ImageConversion.LoadImage(tex, imgtxt);
-            if (!result) return null;
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-            return null;
-        }
+        string resourceStr = "images/" + name;
+        resourceStr = resourceStr.Remove(resourceStr.Length - 4, 4);
+        Texture2D tex = Resources.Load<Texture2D>(resourceStr);
         return tex;
     }
+    
+    // Texture2D GetTexture(string name)
+    // {
+    //     string imgPath = Path.Combine(Application.streamingAssetsPath, "images/" + name);
+    //     Texture2D tex = new Texture2D(1, 1);
+    //     try
+    //     {
+    //         byte[] imgtxt = File.ReadAllBytes(imgPath);
+    //         bool result = ImageConversion.LoadImage(tex, imgtxt);
+    //         if (!result) return null;
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Debug.LogException(e);
+    //         return null;
+    //     }
+    //     return tex;
+    // }
     
     private void GenerateImages()
     {
