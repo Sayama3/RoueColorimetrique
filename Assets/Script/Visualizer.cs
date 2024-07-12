@@ -35,6 +35,7 @@ public class Visualizer : MonoBehaviour
         {
             m_Images.Add(new Image(csv[line][c_NamesIndex], csv[line][c_DominateHueIndex], csv[line][c_AverageHueIndex]));
         }
+        
         Debug.Log("Parsing of necessary data finished");
     }
 
@@ -64,6 +65,7 @@ public class Visualizer : MonoBehaviour
             
 
             float distance = Mathf.Lerp(m_RadiusMin, m_Images.Count / (2*Mathf.PI) + m_RadiusMin, image.AverageHue);
+            // float distance = Mathf.Lerp(m_Images.Count / (2*Mathf.PI) - m_RadiusMin, m_Images.Count / (2*Mathf.PI) + m_RadiusMin, image.DominantHue - image.AverageHue);
             fwd *= distance * m_RadiusScaler;
             // fwd *= m_Images.Count / (2*Mathf.PI);
             var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);

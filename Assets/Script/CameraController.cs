@@ -3,12 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float m_Speed = 10;
-    [SerializeField] private float m_ScrollSpeed = 10;
+    [SerializeField] private GameObject m_UIContainer;
+    [SerializeField] private Slider m_SpeedSlider;
+    [SerializeField] private Slider m_ZoomSlider;
+    
+    private float m_Speed => m_SpeedSlider.value;
+    private float m_ScrollSpeed => m_ZoomSlider.value;
 
     private Camera _camera;
     private bool wasPress = false;
@@ -20,19 +25,16 @@ public class CameraController : MonoBehaviour
         _camera = GetComponent<Camera>();
     }
 
+    private bool hasPressJump = false;
     void Update()
     {
+        if (!hasPressJump && Input.GetButton("Jump")) {
+            m_UIContainer.SetActive(!m_UIContainer.activeSelf);
+            hasPressJump = true;
+        } else if (hasPressJump && !Input.GetButton("Jump")) {
+            hasPressJump = false;
+        }
         KeyboardController();
-        // bool isPress = Input.GetButton("Fire1");
-        //
-        // if (isPress || wasPress)
-        // {
-        //     MouseController();
-        // }
-        // else
-        // {
-        //     KeyboardController();
-        // }
     }
 
     void KeyboardController()
